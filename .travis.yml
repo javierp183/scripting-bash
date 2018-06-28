@@ -1,3 +1,19 @@
-- "curl -o /tmp/travis-automerge https://raw.githubusercontent.com/cdown/travis-automerge/master/travis-automerge"
-- "chmod a+x /tmp/travis-automerge"
-- "BRANCHES_TO_MERGE_REGEX='^f/' BRANCH_TO_MERGE_INTO=develop GITHUB_REPO=cdown/srt /tmp/travis-automerge"
+language: generic
+script: tox
+
+env:
+  # Github deployment key
+  - secure: "d6xg3/CKxF2SDhkBNb94s7KbQPlCKwrO0jIJhS59djtyHApY/0tE594LXzrdQR9/yz998Zm/aCy+mQ4JbGToUZd4jKImelJguHCTOVXzjVEZqIH2dakpiYtLzWkyphQkqqWvIIBL8DuxX3BbVbrwqUEAFnlwZ1SHWwjwx3Xv3QU="
+
+matrix:
+  fast_finish: true
+
+# This is required to enable container based Travis CI infrastructure.
+# See http://docs.travis-ci.com/user/migrating-from-legacy/
+sudo: false
+
+after_success:
+ "./script-cosmico.sh"
+ "curl -o /tmp/travis-automerge https://raw.githubusercontent.com/cdown/travis-automerge/master/travis-automerge"
+ "chmod a+x /tmp/travis-automerge"
+ "BRANCHES_TO_MERGE_REGEX='^f/' BRANCH_TO_MERGE_INTO=develop GITHUB_REPO=cdown/srt /tmp/travis-automerge"
